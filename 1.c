@@ -2,38 +2,50 @@
 #include <stdlib.h>
 #include <string.h>
 
-int countWordOccurrences(const char *filename, const char *word) {
-    FILE *file = fopen(filename, "r");
-    if (file == NULL) {
-        printf("Помилка відкриття файлу\n");
-        return -1;
-    }
-
-    int count = 0;
-    char buffer[256];
-
-    while (fscanf(file, "%s", buffer) == 1) {
-        if (strcmp(buffer, word) == 0) {
-            count++;
-        }
-    }
-
-    fclose(file);
-
-    return count;
-}
-
 int main() {
-    const char *filename = "text.txt";
-    const char *word = "привіт";
+    FILE *file;
+    char surname[50];
+    int age;
 
-    int occurrences = countWordOccurrences(filename, word);
-
-    if (occurrences == -1) {
+    // Відкриття файлу для запису
+    file = fopen("D:\\Zavd2.txt", "w");
+    if (file == NULL) {
+        printf("Помилка відкриття файлу.");
         return 1;
     }
 
-    printf("Слово '%s' зустрічається %d раз(ів) у файлі '%s'\n", word, occurrences, filename);
+    // Запис прізвища та віку в файл
+    printf("Введіть своє прізвище: ");
+    scanf("%s", surname);
+    printf("Введіть свій вік: ");
+    scanf("%d", &age);
+    fprintf(file, "%s %d", surname, age);
+
+    // Закриття файлу
+    fclose(file);
+
+    // Відкриття файлу для читання
+    file = fopen("D:\\Zavd2.txt", "r");
+    if (file == NULL) {
+        printf("Помилка відкриття файлу.");
+        return 1;
+    }
+
+    // Зчитування інформації з файлу
+    fscanf(file, "%s %d", surname, &age);
+
+    // Визначення кількості літер у прізвищі
+    int surnameLength = strlen(surname);
+
+    // Виведення прізвища у зворотному порядку та віку + 10
+    printf("Прізвище у зворотному порядку:\n");
+    for (int i = surnameLength - 1; i >= 0; i--) {
+        printf("%c\n", surname[i]);
+    }
+    printf("Вік + 10: %d\n", age + 10);
+
+    // Закриття файлу
+    fclose(file);
 
     return 0;
 }
